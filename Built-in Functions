@@ -7,6 +7,7 @@
 float Abs(float);
 float Sqrt(float);
 double Power(double, int, int);
+int Mod(int, int);
 
 int main(void)
 {
@@ -19,18 +20,19 @@ int main(void)
     float absnum;
     float sqrtnum;
     double power;
+    int mod;
 
-    printf("Please select one of the three choices below!\n\nChoice #1: Absolute Value\nChoice #2: Square Root\nChoice #3: Exponents\n\n");
+    printf("Please select one of the three choices below!\n\nChoice #1: Absolute Value\nChoice #2: Square Root\nChoice #3: Exponents\nChoice #4: Modulus\n\n");
 
     do
     {
-        printf("Choose (1 - 3): ");
+        printf("Choose (1 - 4): ");
         scanf("%d", &choice);
-        if (choice < 1 || choice > 3)
+        if (choice < 1 || choice > 4)
         {
-            printf("\nError! You can only enter 1, 2, or 3!\n\n");
+            printf("\nError! You can only enter 1, 2, 3, or 4!\n\n");
         }
-    } while (choice < 1 || choice > 3);
+    } while (choice < 1 || choice > 4);
     
     if (choice == 3)
     {
@@ -47,11 +49,26 @@ int main(void)
     
     if (choiceyn == 'n')
     {
-        printf("\nEnter a number -> ");
-        scanf("%f", &numdec);
-        num = (int) numdec;
+        if (choice == 4)
+        {
+            do
+            {
+                printf("\nEnter a positive integer -> ");
+                scanf("%d", &num);
+                if (num < 0)
+                {
+                    printf("\nError!! Value must be positive!\n");
+                }
+            } while (num < 0);
+        }
+        else
+        {
+            printf("\nEnter a number -> ");
+            scanf("%f", &numdec);
+            num = (int) numdec;
+        }
     }
-    
+
     if (choice >= 3)
     {
         printf("\nEnter another number (must be an integer) -> ");
@@ -130,6 +147,12 @@ int main(void)
         }
     }
 
+    if (choice == 4)
+    {
+        mod = Mod(num, num2);
+        printf("\nThe remainder of %d / %d is: %d", num, num2, mod);
+    }
+
     return(0);
 }
 
@@ -179,4 +202,16 @@ double Power(double a, int b, int c)
     }
   
     return(ans);
+}
+
+int Mod(int num1, int num2)
+{
+    double val;
+    int rem;
+
+    val = ((double) num1 / (double) num2);
+    val -= num1 / num2;
+    rem = val * num2;
+  
+    return(rem);
 }
