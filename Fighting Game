@@ -1,0 +1,188 @@
+// This is a fighting game
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Defined constants
+#define MIN 5
+#define MAX 15
+#define COMPMINTURN 1
+#define COMPMAXTURN 3
+#define WAITHEAL 10
+#define MAXHEALTH 100
+#define ABSMAXHEALTH 250
+
+// Function declarations
+void Seed();
+int Generate(int);
+void Begin(char*, char*, int*);
+int Turns(char*, int, int, int);
+void Occurance(int*, int*, int, int);
+void CurrentHealth(char*, char*, int*, int*);
+void Finished(char*, char*, int, int);
+
+int main(void)
+{
+    // Declare variables
+    char p1_name[30]; // Player 1's name
+    char p2_name[30]; // Player 2's name ("Computer" if only 1 player)
+    int playernum; // number of players (1 or 2)
+    int p1_health = MAXHEALTH; // initial player one health
+    int p2_health = MAXHEALTH; // initial player two health
+    
+    // Function calls
+    Seed();
+    Begin(p1_name, p2_name, &playernum);
+    while (p1_health > 0 && p2_health > 0)
+    {
+        if (p1_health > 0)
+        {
+            Occurance(&p1_health, &p2_health, Turns(p1_name, 1, playernum, Generate(1)), Generate(0));
+            CurrentHealth(p1_name, p2_name, &p1_health, &p2_health);
+        }
+        
+        if (p2_health > 0)
+        {
+            Occurance(&p2_health, &p1_health, Turns(p2_name, 2, playernum, Generate(2)), Generate(0));
+            CurrentHealth(p1_name, p2_name, &p1_health, &p2_health);
+        }
+    }
+    Finished(p1_name, p2_name, p1_health, p2_health);
+
+    return(0);
+}
+
+void Seed()
+{
+    // Declare variables
+    int seed; // seed value
+    
+    do
+    {
+        printf("Please enter a seed value -> ");
+        scanf("%d", &seed);
+        if (seed <= 0)
+        {
+            printf("\nError! Seed value must be a positive integer!!\n\n");
+        }
+    } while (seed <= 0);
+    srand(seed);
+    
+    return;
+}
+
+int Generate(int purpose)
+{
+    // Declare variables
+    int value; // value that will attack or heal
+    
+    if (purpose == 0)
+    {
+        value = rand() % (MAX - MIN + 1) + MIN;
+    }
+    else
+    {
+        value = rand() % (COMPMAXTURN - COMPMINTURN + 1) + COMPMINTURN;
+    }
+    
+    return(value);
+}
+
+void Begin(char *p1_name, char *p2_name, int *playernum)
+{
+    printf("\nWelcome! This is a fighting-strategy game where you have to choose one of three moves per turn: Attack (1), Heal (2), or Wait (3).\n");
+    do
+    {
+        printf("\nOne-player (1) or two-players (2)? Enter 1 or 2 -> ");
+        scanf("%d", playernum);
+        if (*playernum != 1 && *playernum != 2)
+        {
+            printf("\nError!! Enter rather 1 or 2!\n");
+        }
+    } while (*playernum != 1 && *playernum != 2);
+    *playernum == 1 ? printf("\nPlayer, ") : printf("\nPlayer 1, ");
+    printf("please enter your name -> ");
+    scanf("%s", p1_name);
+    if (*playernum == 2)
+    {
+        printf("\nPlayer 2, please enter your name -> ");
+        scanf("%s", p2_name);
+    }
+    else
+    {
+        strcpy(p2_name, "Computer");
+        printf("\nIntroducing your opponent: %s\n", p2_name);
+    }
+    printf("\n\n\nFIGHT!\n\n\n");
+    
+    return;
+}
+
+int Turns(char *name, int firstplayercheck, int pnum, int Gennum)
+{
+    // Declare variables
+    int move; // player's move
+    
+    if (pnum == 2 || firstplayercheck == 1)
+    {
+        printf("\n%s, choose your move (Attack (1), Heal (2), or Wait (3)) -> ", name);
+        scanf("%d", &move);
+    }
+    else
+    {
+        move = Gennum;
+        printf("\n%s chose %d\n", name, move);
+    }
+    
+    return(move);
+}
+
+void Occurance(int *turnph, int *nonturnph, int tempvalue, int Gennum)
+{
+    switch(tempvalue)
+    {
+      case 1:
+      *nonturnph -= Gennum;
+      printf("\nAttacking...\n");
+      break;
+      case 2:
+      *turnph += Gennum;
+      printf("\nHealing...\n");
+      break;
+      case 3:
+      *turnph += WAITHEAL;
+      printf("\nWaiting...\n");
+      break;
+      default:
+      printf("\nInvalid move chosen: turn skipped\n");
+      break;
+    }
+
+    return;
+}
+
+void CurrentHealth(char *name1, char *name2, int *p1h, int *p2h)
+{
+    printf("\n%s's health: %d\n", name1, *p1h <= 0 ? 0 : *p1h >= ABSMAXHEALTH ? ABSMAXHEALTH : *p1h);
+    printf("\n%s's health: %d\n", name2, *p2h <= 0 ? 0 : *p2h >= ABSMAXHEALTH ? ABSMAXHEALTH : *p2h);
+    
+    *p1h = (*p1h <= 0) ? 0 : (*p1h >= ABSMAXHEALTH) ? ABSMAXHEALTH : *p1h;
+    *p2h = (*p2h <= 0) ? 0 : (*p2h >= ABSMAXHEALTH) ? ABSMAXHEALTH : *p2h;
+    
+    return;
+}
+
+void Finished(char *p1_name, char *p2_name, int p1h, int p2h)
+{
+    printf("\nGame Over!!\n\n");
+    if (p1h <= 0)
+    {
+        printf("%s won!!\n", p2_name);
+    }
+    else
+    {
+        printf("%s won!!\n", p1_name);
+    }
+    
+    return;
+}
