@@ -1,0 +1,185 @@
+// This program will ask the user to input the number of questions for 4 operations: addition, subtraction, multiplication, and division.
+#include <stdio.h>
+#include <math.h>
+
+// Defined constants
+#define MIN 1
+#define MAX 100
+#define PLUS '+'
+#define MINUS '-'
+#define ASTERISK '*'
+#define SLASH '/'
+#define OPERS 4
+#define ERROR 0.05
+
+// Function declarations
+void InputSeed();
+int InputQues();
+int Generation();
+void Check(double*, int, int, char, int*);
+void Add(int, int, double*);
+void Subtract(int, int, double*);
+void Multiply(int, int, double*);
+void Divide(int, int, double*);
+void Finished(int, int);
+
+int main()
+{
+    // Declare variables
+    int ques; // number of questions
+    int num1; // number one
+    int num2; // number two
+    double answer; // answer to question(s)
+    int count = 0; // number of questions correct
+    int total; // total number of questions
+    
+    // Function calls
+    InputSeed();
+    ques = InputQues();
+    for(int i = 0; i < ques; i++)
+    {
+        num1 = Generation();
+        num2 = Generation();
+        Add(num1, num2, &answer);
+        Check(&answer, num1, num2, PLUS, &count);
+    }
+    for(int i = 0; i < ques; i++)
+    {
+        num1 = Generation();
+        num2 = Generation();
+        Subtract(num1, num2, &answer);
+        Check(&answer, num1, num2, MINUS, &count);
+    }
+    for(int i = 0; i < ques; i++)
+    {
+        num1 = Generation();
+        num2 = Generation();
+        Multiply(num1, num2, &answer);
+        Check(&answer, num1, num2, ASTERISK, &count);
+    }
+    for(int i = 0; i < ques; i++)
+    {
+        num1 = Generation();
+        num2 = Generation();
+        Divide(num1, num2, &answer);
+        Check(&answer, num1, num2, SLASH, &count);
+    }
+    total = ques * OPERS;
+    Finished(count, total);
+    
+    return(0);
+}
+
+void InputSeed()
+{
+  // Declare variables
+  int seed; // randomly generated seed
+
+  printf("Enter a seed -> ");
+  scanf("%d", &seed);
+
+  srand(seed);
+
+  return;
+}
+
+int InputQues()
+{
+    // Declare variables
+    int numques; // number of questions
+    
+    printf("Enter the number of questions you want to answer for each operator -> ");
+    scanf("%d", &numques);
+    
+    return(numques);
+}
+
+int Generation()
+{
+  // Declare variables
+  int gennum; // number to be generated
+
+  gennum = rand() % (MAX - MIN + 1) + MIN;
+
+  return(gennum);
+}
+
+void Check(double *answer, int num1, int num2, char op, int *count)
+{
+    // Declare variables
+    double correctnum; // correct answer
+    
+    if (op == PLUS)
+    {
+        correctnum = (double) num1 + (double) num2;
+    }
+    else if (op == MINUS)
+    {
+        correctnum = (double) num1 - (double) num2;
+    }
+    else if (op == ASTERISK)
+    {
+        correctnum = (double) num1 * (double) num2;
+    }
+    else if (op == SLASH)
+    {
+        correctnum = (double) num1 / (double) num2;
+    }
+
+    if (fabs(correctnum - *answer) <= ERROR)
+    {
+        printf("Correct!\n");
+        (*count)++;
+    }
+    else
+    {
+        printf("Incorrect!\n");
+        printf("The correct answer is: %.*f\n", op == SLASH ? 3 : 0, correctnum);
+    }
+    
+    return;
+}
+
+void Add(int num1, int num2, double *answer)
+{
+    printf("What is %d + %d? ", num1, num2);
+    scanf("%lf", answer);
+    
+    return;
+}
+
+void Subtract(int num1, int num2, double *answer)
+{
+    printf("What is %d - %d? ", num1, num2);
+    scanf("%lf", answer);
+    
+    return;
+}
+
+void Multiply(int num1, int num2, double *answer)
+{
+    printf("What is %d * %d? ", num1, num2);
+    scanf("%lf", answer);
+    
+    return;
+}
+
+void Divide(int num1, int num2, double *answer)
+{
+    printf("What is %d / %d? ", num1, num2);
+    scanf("%lf", answer);
+    
+    return;
+}
+
+void Finished(int count, int total)
+{
+    if (count > total / 2)
+    {
+        printf("Good Job! You got %d out of %d correct!", count, total);
+    }
+    else
+    {
+        printf("You got %d out of %d correct. Perhaps you could do better next time.", count, total);
+    }
+}
