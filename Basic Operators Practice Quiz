@@ -23,7 +23,7 @@ void Multiply(int, int, double*);
 void Divide(int, int, double*);
 void Finished(int, int);
 
-int main()
+int main(void)
 {
     // Declare variables
     int ques; // number of questions
