@@ -22,7 +22,7 @@ int main(void)
     double power;
     int mod;
 
-    printf("Please select one of the three choices below!\n\nChoice #1: Absolute Value\nChoice #2: Square Root\nChoice #3: Exponents\nChoice #4: Modulus\n\n");
+    printf("Please select one of the three choices below!\n\nChoice #1: Absolute Value\nChoice #2: Square Root\nChoice #3: Exponents\nChoice #4: Remainder\n\n");
 
     do
     {
@@ -150,7 +150,7 @@ int main(void)
     if (choice == 4)
     {
         mod = Mod(num, num2);
-        printf("\nThe remainder of %d / %d is: %d", num, num2, mod);
+        printf("\nThe value of %d / %d is %d with a remainder of %d", num, num2, num / num2, mod);
     }
 
     return(0);
