@@ -1,4 +1,4 @@
-// This program will ask the user to input the number of questions for 4 operations: addition, subtraction, multiplication, and division.
+// This program will ask the user to input the number of questions for 4 operations: addition, subtraction, multiplication, and division; and then quiz them on the math questions.
 #include <stdio.h>
 #include <math.h>
 
