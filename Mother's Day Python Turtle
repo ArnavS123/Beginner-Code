@@ -5,8 +5,8 @@ turtle.Screen()
 pen = turtle.Turtle()
 
 # Define a function to draw a heart shape
-def draw_heart(color):
-    pen.fillcolor(color)
+def draw_heart():
+    pen.fillcolor("Red")
     pen.begin_fill()
     pen.left(45)
     pen.forward(100)
@@ -23,7 +23,7 @@ pen.goto(0, 50)
 pen.pendown()
 
 # Draw the heart
-draw_heart("red")
+draw_heart()
 
 # Move the pen to write the Mother's Day message
 pen.penup()
