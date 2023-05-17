@@ -1,4 +1,4 @@
-// This is a fighting game between two individuals. There is an option for the second person to be the computer.
+// This is a fighting game between two individuals. There is an option for the second person to be the computer (randomly chosen moves).
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
